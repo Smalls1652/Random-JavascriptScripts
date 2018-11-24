@@ -16,43 +16,43 @@ Change the variable ReminderList (Located on Line 21) to whatever your desired r
 
 */
 
-// Begin User Variables
+// Begin User Variables -->
 
 let ReminderList = "Daily Reminders" //The name of the reminder list
 
-// End User Variables
+// <-- End User Variables
 
 
 
 // Do not edit below unless you know what you're doing
 
-// Begin Code Section
+// Begin function declarations -->
 
-getRemindersCal = (list) => {
-	//Get the reminder calendar and return it.
+function getRemindersCal(list) { //Get the reminder calendar and return it.
+	
 	return Calendar.forRemindersByTitle(list)
 }
 
-getRemindersForToday = (calendar) => {
+function getRemindersForToday(calendar) {
 	//Get the reminders due today and return them.
 	return Reminder.incompleteDueToday([calendar])
 }
 
-checkRemindersLength = (rlist) => {
+function checkRemindersLength(rlist) {
 	if (rlist.length == 0) {
 		//If Reminders is empty, then break the script and announce it.
 		throw new Error("There are no reminders due today to complete in your list " + ReminderList + ".")
 	}
 }
 
-completeReminder = (reminder) => {
+function completeReminder(reminder){
 	reminder.isCompleted = true //Sets the reminder to complete.
 	console.log(reminder.title + " has been marked as completed.")
 	reminder.save() //Saves the completion to the reminder.
 	console.log("Saved!")
 }
 
-handleError = (returnedError) => {
+function handleError(returnedError) {
 	//If any error occurs, this chooses the proper output.
 	if (config.runsWithSiri) { 
 		outputText("Hmm... There seems to be an issue.\n\n" + returnedError.message)
@@ -67,7 +67,7 @@ handleError = (returnedError) => {
 	}
 }
 
-outputText = (text) => {
+function outputText(text) {
 	//Choose the proper output option
 	
 	if (config.runsWithSiri) {
@@ -88,21 +88,28 @@ outputText = (text) => {
 	console.log(text)
 }
 	
-
-await getRemindersCal(ReminderList) //Get the calendar for the reminder list.
-.then(ReminderCal => getRemindersForToday(ReminderCal)) //Get the reminders due today in the list.
-.then(r => {
-	checkRemindersLength(r) //Check the length of the reminders returned
-	return r
-})
-.then(Reminders => {
-	//Iterate each reminder object and mark as complete. Announce it's completion when done.
-	Reminders.map(rem => completeReminder(rem))
+function completeReminderList() {
+	getRemindersCal(ReminderList) //Get the calendar for the reminder list.
+	.then(ReminderCal => getRemindersForToday(ReminderCal)) //Get the reminders due today in the list.
+	.then(r => {
+		checkRemindersLength(r) //Check the length of the reminders returned
+		return r
+	})
+	.then(Reminders => {
+		//Iterate each reminder object and mark as complete. Announce it's completion when done.
+		Reminders.map(rem => completeReminder(rem))
+		
+		outputText("Reminders due today, from your list " + ReminderList + ", have been marked complete.")
+	})
+	.catch(err => handleError(err)) //Any errors are thrown in this catch and reported back through the handleError() function.
 	
-	outputText("Reminders due today, from your list " + ReminderList + ", have been marked complete.")
-})
-.catch(err => handleError(err)) //Any errors are thrown in this catch and reported back through the handleError() function.
+	Script.complete()
+}
 
-Script.complete()
+// <-- End function declarations
 
-// End Code Section
+// Begin script actions -->
+
+await completeReminderList()
+
+// <-- End script actions.
