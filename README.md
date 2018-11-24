@@ -2,10 +2,8 @@
 
 This is my repo of random Javascript scripts that I've made. It could be simple stupid or something complex/fancy.
 
-## Scripts
+## Folders
 
-### mOCk-sCrIPt.js
+### Scriptable
 
-Know that Spongebob meme where he looks like a chicken and the text is in a mocking tone? This converts text to that format.
-
-**Script was made on iOS using Scriptable. Relevant portions of the script have been commented.**
+Scripts made on iOS using the Scriptable app.
