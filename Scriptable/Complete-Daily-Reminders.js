@@ -23,7 +23,6 @@ let ReminderList = "Daily Reminders" //The name of the reminder list
 // <-- End User Variables
 
 
-
 // Do not edit below unless you know what you're doing
 
 // Begin function declarations -->
@@ -33,27 +32,29 @@ function getRemindersCal(list) { //Get the reminder calendar and return it.
 	return Calendar.forRemindersByTitle(list)
 }
 
-function getRemindersForToday(calendar) {
-	//Get the reminders due today and return them.
+function getRemindersForToday(calendar) { //Get the reminders due today and return them.
+
 	return Reminder.incompleteDueToday([calendar])
 }
 
-function checkRemindersLength(rlist) {
+function checkRemindersLength(rlist) { //Checks the reminders list length.
+
 	if (rlist.length == 0) {
 		//If Reminders is empty, then break the script and announce it.
 		throw new Error("There are no reminders due today to complete in your list " + ReminderList + ".")
 	}
 }
 
-function completeReminder(reminder){
+function completeReminder(reminder){ //Reminders are set to complete and saved.
+
 	reminder.isCompleted = true //Sets the reminder to complete.
 	console.log(reminder.title + " has been marked as completed.")
 	reminder.save() //Saves the completion to the reminder.
 	console.log("Saved!")
 }
 
-function handleError(returnedError) {
-	//If any error occurs, this chooses the proper output.
+function handleError(returnedError) { //Handles errors thrown it's way.
+
 	if (config.runsWithSiri) { 
 		outputText("Hmm... There seems to be an issue.\n\n" + returnedError.message)
 		Script.complete()
@@ -67,8 +68,7 @@ function handleError(returnedError) {
 	}
 }
 
-function outputText(text) {
-	//Choose the proper output option
+function outputText(text) {  //Choose the proper output option
 	
 	if (config.runsWithSiri) {
 	//If Siri is used to invoke the script.
@@ -88,15 +88,17 @@ function outputText(text) {
 	console.log(text)
 }
 	
-function completeReminderList() {
+function completeReminderList() { //Main action function to run the script.
+
 	getRemindersCal(ReminderList) //Get the calendar for the reminder list.
 	.then(ReminderCal => getRemindersForToday(ReminderCal)) //Get the reminders due today in the list.
 	.then(r => {
+		
 		checkRemindersLength(r) //Check the length of the reminders returned
 		return r
 	})
-	.then(Reminders => {
-		//Iterate each reminder object and mark as complete. Announce it's completion when done.
+	.then(Reminders => { //Iterate each reminder object and mark as complete. Announce it's completion when done.
+		
 		Reminders.map(rem => completeReminder(rem))
 		
 		outputText("Reminders due today, from your list " + ReminderList + ", have been marked complete.")
@@ -110,6 +112,6 @@ function completeReminderList() {
 
 // Begin script actions -->
 
-await completeReminderList()
+await completeReminderList() //The main action that runs the script.
 
 // <-- End script actions.
