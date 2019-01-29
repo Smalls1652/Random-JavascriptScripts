@@ -6,6 +6,8 @@ Created by: Smalls
 Website - https://smalls.online
 Github - https://github.com/Smalls1652
 
+Version: 2.0.1
+
 Description:
 Completes every reminder that's due today in a given calendar.
 
@@ -16,7 +18,7 @@ Change the variable ReminderList (Located on Line 19) to whatever your desired r
 
 */
 
-let ReminderList = "Morning Reminders"; //The name of the reminder list
+let ReminderList = ""; //The name of the reminder list
 
 // Do not edit below unless you know what you're doing
 
